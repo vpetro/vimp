@@ -1,4 +1,6 @@
 import neovim
+import os
+from datetime import datetime
 
 
 @neovim.plugin
@@ -32,3 +34,11 @@ class VimpBuffers(object):
         # create a new terminal when there is no terminal buffer
         self.vim.command("botright new")
         self.vim.command(":terminal")
+
+    @neovim.command("ShowTodaysNotes")
+    def open_log_file(self):
+        filepath = os.path.join(
+            os.environ.get("NOTES_DIR"),
+            "%s.md" % datetime.now().strftime("%Y-%m-%d")
+        )
+        self.vim.command("vs %s" % filepath)
